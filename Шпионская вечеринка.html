@@ -264,7 +264,13 @@ function startHost(isRoomCode) {
     updateLobbyUI();
     showScreen('host-lobby-screen');
     document.getElementById('host-room-code-section').style.display = isRoomCode ? 'block' : 'none';
-    document.getElementById('host-qr-section').style.display = isRoomCode ? 'none' : 'block';
+    const qrSection = document.getElementById('host-qr-section');
+    qrSection.style.display = isRoomCode ? 'none' : 'block';
+
+    if (!isRoomCode) {
+        // Запускаем генерацию только если выбран QR-режим и после того, как экран стал видим
+        setTimeout(generateNewQrOffer, 100); // Небольшая задержка для гарантии
+    }
 }
 function startHostViaRoomCode() {
     startHost(true);
@@ -281,8 +287,7 @@ function startHostViaRoomCode() {
     });
 }
 function startHostViaQr() {
-    startHost(false);
-    generateNewQrOffer();
+    startHost(false); // Эта функция показывает экран
     qrScanner = new Html5Qrcode("qr-scanner-container");
     qrScanner.start({ facingMode: "environment" }, { fps: 10 }, (decodedText) => {
         try {

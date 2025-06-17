@@ -170,7 +170,7 @@
         </div>
         <div id="client-qr-show-section" style="display:none;">
             <h3>Покажите этот QR-код Хосту</h3>
-            <div class="qr-container"><canvas id="qr-answer-canvas"></canvas></div>
+            <div class="qr-container"><canvas id="qr-offer-canvas" width="250" height="250"></canvas></div>
             <p>Ожидание завершения подключения...</p>
         </div>
     </div>
@@ -303,7 +303,11 @@ function generateNewQrOffer() {
     const peer = createPeer(peerId, true);
     peer.on('signal', (data) => {
         if (data.type === 'offer') {
-            new QRious({ element: document.getElementById('qr-offer-canvas'), value: JSON.stringify({ peerId: peerId, signal: data }), size: 200 });
+            new QRious({ 
+                element: document.getElementById('qr-offer-canvas'), 
+                value: JSON.stringify({ peerId: peerId, signal: data }), 
+                size: 250 // <-- ИЗМЕНЕНИЕ ЗДЕСЬ
+            });
         }
     });
 }
